@@ -31,7 +31,10 @@
         "pdepend/pdepend": "*",
         "sebastian/phpcpd": "*",
         "squizlabs/php_codesniffer": "*",
-        "phpmetrics/phpmetrics": "*"
+        "phpmetrics/phpmetrics": "*",
+        "composer/xdebug-handler": "3.0.3",
+        "friendsofphp/php-cs-fixer": "^3.14",
+        "phpunit/phpunit": "^9.6"
     },
     "suggest": {
         "enlightn/security-checker": "Check composer.lock for known security issues",
@@ -44,8 +47,7 @@
         "qossmic/deptrac-shim": "Enforce rules for dependencies between software layers"
     },
     "require-dev": {
-        "hamcrest/hamcrest-php": ">=2.0.1",
-        "phpunit/phpunit": ">=4.8.28"
+        "hamcrest/hamcrest-php": ">=2.0.1"
     },
     "autoload": {
         "psr-4": {

@@ -1,14 +1,14 @@
 phpqa:
     # default CLI options - https://github.com/EdgedesignCZ/phpqa#analyze
     # can be overriden by CLI: phpqa --tools phpcs:1
-    analyzedDirs: ./
+    analyzedDirs: ../student-ledger
     buildDir: build/
-    ignoredDirs: vendor
+    ignoredDirs: vendor,tests
     ignoredFiles: ""
-    report: false
+    report: true
     execution: parallel
     output: file
-    tools: phpmetrics,phploc,phpcs,php-cs-fixer,phpmd,pdepend,phpcpd,phpstan,phpunit,psalm,security-checker,parallel-lint,deptrac
+    tools: phpcs,phpmd,php-cs-fixer
     # array definition and allowed errors count is supported too
     # tools: [phploc, phpcs:0]
     verbose: false
@@ -20,7 +20,7 @@ phpqa:
 
 phpcs:
     # alternatively you can use an array to define multiple standards (https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage#specifying-a-coding-standard)
-    standard: PSR2
+    standard: phpcs.xml
     # number of allowed errors is compared with warnings+errors, or just errors from checkstyle.xml
     ignoreWarnings: false
     # https://github.com/squizlabs/PHP_CodeSniffer/wiki/Reporting
@@ -33,6 +33,11 @@ phpcs:
             # you can include custom reports (https://github.com/wikidi/codesniffer/blob/master/reports/wikidi/Summary.php#L39)
             # ./vendor/owner/package/src/MySummaryReport.php: phpcs-summary.html
 
+phpmd:
+    # alternatively you can use an array to define multiple rule sets (https://phpmd.org/documentation/index.html#using-multiple-rule-sets)
+    standard: phpmd.xml
+    ignoreParsingErrors: true
+
 php-cs-fixer:
     # http://cs.sensiolabs.org/#usage
     rules: '@PSR2'
@@ -42,68 +47,11 @@ php-cs-fixer:
     # alternatively you can define path to your .phpcs_file (rules/allowRiskyRules config is ignored)
     config: null
 
-phpmd:
-    # alternatively you can use an array to define multiple rule sets (https://phpmd.org/documentation/index.html#using-multiple-rule-sets)
-    standard: app/phpmd.xml
-    ignoreParsingErrors: true
-
-pdepend:
-    # coverageReport: build/coverage-clover.xml
-
-phpcpd:
-    minLines: 5
-    minTokens: 70
-
-phpmetrics:
-    # v1
-    config: null
-    # v2
-    git: false
-    # junit: build/log-junit.xml
-    # composer: composer.json
-
-phpstan:
-    level: 0
-    # https://github.com/phpstan/phpstan/issues/1880
-    memoryLimit: null
-    # https://github.com/phpstan/phpstan#configuration
-    # standard: tests/.ci/phpstan.neon
-
-phpunit:
-    # binary: vendor/bin/phpunit
-    binary: null
-    # phpunit.xml
-    config: null
-    reports:
-        file: []
-            # log: [junit, tap, json]
-            # testdox: [html, text]
-            # coverage: [html, clover, crap4j, php, text, xml] # requires XDebug extension
-
-psalm:
-    config: app/psalm.xml
-    deadCode: false
-    threads: 1
-    showInfo: true
-    # no memory limit = using ini defaults (https://github.com/EdgedesignCZ/phpqa/issues/144
-    memoryLimit: null
-
-deptrac:
-    depfile: null # depfile.yml (https://github.com/qossmic/deptrac#the-depfile)
-
-security-checker:
-    composerLock: null # use it if composer.lock is not in current working directory or analyzed directory
-
 # paths are relative to .phpqa.yml, so don't copy-paste this section if you don't have custom templates
 report:
-    phploc: app/report/phploc.xsl
-    phpcpd: app/report/phpcpd.xsl
-    phpcs: app/report/phpcs.xsl
-    pdepend: app/report/pdepend.xsl
-    phpmd: app/report/phpmd.xsl
-    php-cs-fixer: app/report/php-cs-fixer.xsl
-    psalm: app/report/psalm.xsl
-    phpstan: app/report/phpstan.xsl
+    phpcs: ./app/report/phpcs.xsl
+    phpmd: ./app/report/phpmd.xsl
+    php-cs-fixer: ./app/report/php-cs-fixer.xsl
     assets:
         bootstrap.min.css: https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
         jquery.min.js: https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js
@@ -125,16 +73,6 @@ report:
 # Beware that configuration or \Edge\QA\Tools\Tool might change (especially $SETTINGS is not stable :)
 # Use it for development of new tools, but not on production (you can add just a new tool, don't have to define all tools).
 tool:
-    phpmetrics: [Edge\QA\Tools\Analyzer\PhpMetrics, Edge\QA\Tools\Analyzer\PhpMetricsV2]
-    phploc: Edge\QA\Tools\Analyzer\Phploc
     phpcs: Edge\QA\Tools\Analyzer\Phpcs
-    php-cs-fixer: Edge\QA\Tools\Analyzer\PhpCsFixer
     phpmd: Edge\QA\Tools\Analyzer\Phpmd
-    pdepend: Edge\QA\Tools\Analyzer\Pdepend
-    phpcpd: Edge\QA\Tools\Analyzer\Phpcpd
-    parallel-lint: Edge\QA\Tools\Analyzer\ParallelLint
-    phpstan: Edge\QA\Tools\Analyzer\Phpstan
-    phpunit: Edge\QA\Tools\Analyzer\Phpunit
-    psalm: Edge\QA\Tools\Analyzer\Psalm
-    security-checker: Edge\QA\Tools\Analyzer\SecurityChecker
-    deptrac: Edge\QA\Tools\Analyzer\Deptrac
+    php-cs-fixer: Edge\QA\Tools\Analyzer\PhpCsFixer
